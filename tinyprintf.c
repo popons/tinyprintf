@@ -32,13 +32,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 /* Enable long long int support (implies long int support) */
 #define PRINTF_LONG_LONG_SUPPORT
 
-/* Enable %z (size_t) support */
-#define PRINTF_SIZE_T_SUPPORT
-
 /*
  * Configuration adjustments
  */
-#ifdef PRINTF_SIZE_T_SUPPORT
+/* Enable %z (size_t) support */
+#ifndef PRINTF_SIZE_T_SUPPORT
+#define PRINTF_SIZE_T_SUPPORT 1
+#endif
+#if PRINTF_SIZE_T_SUPPORT
 #include <sys/types.h>
 #endif
 
@@ -309,7 +310,7 @@ void tfp_format(void *putp, putcf putf, const char *fmt, va_list va)
               } while ((ch >= '0') && (ch <= '9'));
             }
 
-#ifdef PRINTF_SIZE_T_SUPPORT
+#if PRINTF_SIZE_T_SUPPORT
 # ifdef PRINTF_LONG_SUPPORT
             if (ch == 'z') {
                 ch = *(fmt++);
